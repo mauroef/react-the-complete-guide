@@ -7,6 +7,7 @@ const ExpenseForm = (props) => {
     enteredAmount: '',
     enteredDate: '',
   });
+  const [showForm, setShowForm] = useState(false);
 
   // Memorize: use function form if state update depends on the previous state
   const titleChangeHandler = (event) => {
@@ -28,12 +29,13 @@ const ExpenseForm = (props) => {
   };
 
   const submitHandler = (event) => {
+    const date = new Date(userInput.enteredDate);
     event.preventDefault();
-
     props.onSaveExpenseData({
       title: userInput.enteredTitle,
       amount: userInput.enteredAmount,
-      date: new Date(userInput.enteredDate),
+      // To normalize the date and eliminate the unwanted offset
+      date: new Date( date.getTime() - date.getTimezoneOffset() * -60000 ),
     });
     // clear inputs
     setUserInput({
@@ -41,7 +43,21 @@ const ExpenseForm = (props) => {
       enteredAmount: '',
       enteredDate: '',
     });
+    setShowForm(!showForm);
   };
+
+  const formToggleHandler = (e) => {
+    e.preventDefault();
+    setShowForm(!showForm);
+  };
+
+  if (!showForm) {
+    return (
+      <div className='new-expense__actions' style={{ textAlign: 'center' }}>
+        <button onClick={formToggleHandler}>Add New Expense</button>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={submitHandler}>
@@ -76,6 +92,7 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className='new-expense__actions'>
+        <button onClick={formToggleHandler}>Cancel</button>
         <button type='submit'>Add Expense</button>
       </div>
     </form>
