@@ -1,4 +1,4 @@
-import React, { /* useEffect, */ useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
@@ -43,10 +43,6 @@ const passwordReducer = (state, action) => {
 };
 
 const Login = (props) => {
-  // const [enteredEmail, setEnteredEmail] = useState('');
-  // const [emailIsValid, setEmailIsValid] = useState();
-  // const [enteredPassword, setEnteredPassword] = useState('');
-  // const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -58,37 +54,32 @@ const Login = (props) => {
     isValid: null,
   });
 
-  // useEffect(() => {
-  //   const identifier = setTimeout(() => {
-  //     console.log('checking validation');
-  //     setFormIsValid(
-  //       enteredEmail.includes('@') && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
+  const { isValid: emailIsvalid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
 
-  //   // render each dependency update (not first time rendering)
-  //   return () => {
-  //     console.log('clean_up');
-  //     clearTimeout(identifier);
-  //   };
-  // }, [enteredEmail, enteredPassword]);
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log('checking validation');
+      setFormIsValid(emailIsvalid && passwordIsValid);
+    }, 500);
+
+    // render each dependency update (not first time rendering)
+    return () => {
+      console.log('clean up');
+      clearTimeout(identifier);
+    };
+  }, [emailIsvalid, passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: 'USER_INPUT', val: event.target.value });
-    setFormIsValid(
-      event.target.value.includes('@') && passwordState.value.trim().length > 6
-    );
   };
 
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: 'USER_INPUT', val: event.target.value });
-    setFormIsValid(
-      emailState.value.includes('@') && event.target.value.trim().length > 6
-    );
   };
 
   const validateEmailHandler = () => {
-    dispatchEmail({ type: 'USER_BLUR',  });
+    dispatchEmail({ type: 'USER_BLUR' });
   };
 
   const validatePasswordHandler = () => {
