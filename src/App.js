@@ -9,7 +9,7 @@ function App() {
   const { isLoading, error, sendRequest: fetchTasks } = useHttp();
 
   useEffect(() => {
-    const transfomrTasks = (tasksObj) => {
+    const transformTasks = (tasksObj) => {
       const loadedTasks = [];
 
       for (const taskKey in tasksObj) {
@@ -19,10 +19,12 @@ function App() {
       setTasks(loadedTasks);
     };
 
-    fetchTasks({
-      url: 'https://react-the-complete-guide-c54d2-default-rtdb.firebaseio.com/tasks.json',
-      transfomrTasks,
-    });
+    fetchTasks(
+      {
+        url: 'https://react-the-complete-guide-c54d2-default-rtdb.firebaseio.com/tasks.json',
+      },
+      transformTasks
+    );
   }, [fetchTasks]);
 
   const taskAddHandler = (task) => {
