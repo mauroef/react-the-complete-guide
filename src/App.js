@@ -8,6 +8,7 @@ import RootLayout from './pages/Root';
 import HomePage from './pages/Home';
 import ProductsPage from './pages/Products';
 import ErrorPage from './pages/Error';
+import ProdcutDetailPage from './pages/ProductDetail';
 
 // const routeDefinitions = createRoutesFromElements(
 //   <Route>
@@ -20,10 +21,11 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
     children: [
-      { path: '/', element: <HomePage /> },
+      { index: true, element: <HomePage /> },
       { path: '/products', element: <ProductsPage /> },
+      { path: '/products/:id', element: <ProdcutDetailPage /> },
     ],
   },
 ]);
