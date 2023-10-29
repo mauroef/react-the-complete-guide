@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { json, useLoaderData } from 'react-router-dom';
 
 import EventsList from '../components/EventsList';
 
@@ -25,9 +25,12 @@ export async function loader() {
 
   if (!response.ok) {
     // return { isError: true, message: 'Could not fecth events.' }; FIXME: there is a better way
-    throw new Response(JSON.stringify({ message: 'Could not fecth events.' }), {
-      status: 500,
-    });
+    throw json(
+      { message: 'Could not fecth events.' },
+      {
+        status: 500,
+      }
+    );
   } else {
     return response;
   }
