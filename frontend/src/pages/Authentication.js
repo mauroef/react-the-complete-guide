@@ -29,7 +29,7 @@ export async function action({ request }) {
     body: JSON.stringify(authData),
   });
 
-  if (response.staus === 422 || response.status === 401) {
+  if (response.status === 422 || response.status === 401) {
     return response;
   }
 
@@ -37,6 +37,10 @@ export async function action({ request }) {
     throw json({ message: 'Could not authenticate user.' }, { status: 500 });
   }
 
-  // TODO: manage token
+  const resData = await response.json();
+  const token = resData.token;
+
+  localStorage.setItem('token', token);
+  
   return redirect('/');
 }
