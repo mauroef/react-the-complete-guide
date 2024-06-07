@@ -7,7 +7,7 @@ export default function MealDetailsPage({ params }) {
   const meal = getMeal(params['meal-slug']);
 
   if (!meal) {
-notFound();
+    notFound();
   }
 
   meal.instructions = meal.instructions.replace(/\n/g, '<br />');
@@ -16,7 +16,11 @@ notFound();
     <>
       <header className={classes.header}>
         <div className={classes.image}>
-          <Image src={meal.image} alt={meal.title} fill />
+          <Image
+            src={`https://react-complete-guide-food-app.s3.amazonaws.com/${meal.image}`}
+            alt={meal.title}
+            fill
+          />
         </div>
         <div className={classes.headerText}>
           <h1>{meal.title}</h1>
